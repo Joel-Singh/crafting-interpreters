@@ -32,10 +32,13 @@ void test_insertll();
 void deletell(LinkedList* ll, int index);
 void test_deletell();
 
+Node* findll(LinkedList* ll, int data);
+void test_findll();
+
 void printll(LinkedList* ll);
 
 int main(void) {
-  test_deletell();
+  test_findll();
 }
 
 void insertll(LinkedList* ll, int data, int index) {
@@ -132,6 +135,16 @@ void deletell(LinkedList* ll, int index) {
   free(x);
 }
 
+Node* findll(LinkedList* ll, int data) {
+  for (Node* n = ll->head; n != NULL; n = n->next) {
+    if (*n->data == data) {
+      return n;
+    }
+  }
+
+  return NULL;
+}
+
 void printll(LinkedList* ll) {
   printf("NULL");
 
@@ -181,4 +194,17 @@ void test_deletell() {
 
   deletell(&ll, 0);
   printll(&ll);
+}
+
+void test_findll() {
+  LinkedList ll = {.head = NULL, .tail = NULL};
+
+  insertll(&ll, 4, 0);
+  insertll(&ll, 3, 0);
+  insertll(&ll, 2, 0);
+  insertll(&ll, 1, 0);
+
+  Node* node = findll(&ll, 2);
+
+  printf("data is %d\n", *node->data);
 }
