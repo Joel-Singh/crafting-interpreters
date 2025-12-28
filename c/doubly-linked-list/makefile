@@ -3,3 +3,6 @@ main: main.c
 
 watch:
 	find ./ | entr -c sh -c "make --no-print-directory && ./main.bin"
+
+main_debug: main.c
+	gcc -O0 -g main.c -o main.bin
