@@ -28,10 +28,14 @@ struct LinkedList {
 
 void insertll(LinkedList* ll, int data, int index);
 void test_insertll();
+
+void deletell(LinkedList* ll, int index);
+void test_deletell();
+
 void printll(LinkedList* ll);
 
 int main(void) {
-  test_insertll();
+  test_deletell();
 }
 
 void insertll(LinkedList* ll, int data, int index) {
@@ -86,6 +90,48 @@ void insertll(LinkedList* ll, int data, int index) {
   }
 }
 
+void deletell(LinkedList* ll, int index) {
+  if (index < 0) {
+    printf("Invalid index < 0 for linked list! Index: %d", index);
+    exit(EXIT_FAILURE);
+  }
+
+  Node* x = ll->head;
+
+  for (int i = 0; i < index; i++) {
+    if (x == NULL) {
+      printf("Invalid too big index for linked list of length %d! Index: %d", i, index);
+      exit(EXIT_FAILURE);
+    }
+
+    x = x->next;
+  }
+
+  if (x == NULL) {
+    printf("Trying to delete from empty list!");
+    exit(EXIT_FAILURE);
+  }
+
+  if (x == ll->head) {
+    ll->head = x->next;
+  }
+
+  if (x == ll->tail) {
+    ll->tail = x->prev;
+  }
+
+  if (x->next != NULL) {
+    x->next->prev = x->prev;
+  }
+
+  if (x->prev != NULL) {
+    x->prev->next = x->next;
+  }
+
+  free(x->data);
+  free(x);
+}
+
 void printll(LinkedList* ll) {
   printf("NULL");
 
@@ -111,5 +157,28 @@ void test_insertll() {
   printll(&ll);
 
   insertll(&ll, 3, 2);
+  printll(&ll);
+}
+
+void test_deletell() {
+  LinkedList ll = {.head = NULL, .tail = NULL};
+
+  insertll(&ll, 4, 0);
+  insertll(&ll, 3, 0);
+  insertll(&ll, 2, 0);
+  insertll(&ll, 1, 0);
+
+  printll(&ll);
+
+  deletell(&ll, 0);
+  printll(&ll);
+
+  deletell(&ll, 1);
+  printll(&ll);
+
+  deletell(&ll, 1);
+  printll(&ll);
+
+  deletell(&ll, 0);
   printll(&ll);
 }

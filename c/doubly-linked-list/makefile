@@ -5,4 +5,4 @@ watch:
 	find ./ | entr -c sh -c "make --no-print-directory && ./main.bin"
 
 main_debug: main.c
-	gcc -O0 -g main.c -o main.bin
+	gcc -fsanitize=address -O0 -g main.c -o main.bin
