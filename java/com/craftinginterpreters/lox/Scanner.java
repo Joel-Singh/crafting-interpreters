@@ -65,7 +65,14 @@ class Scanner {
       case '-': addToken(MINUS); break;
       case '+': addToken(PLUS); break;
       case ';': addToken(SEMICOLON); break;
-      case '*': addToken(STAR); break;
+      case '*': 
+        if (match('/')) {
+          Lox.error(line, "Comment Block Close Without Open");
+        } else {
+          addToken(STAR);
+        }
+        break;
+
 
       case '!':
         addToken(match('=') ? BANG_EQUAL : BANG);
@@ -83,6 +90,27 @@ class Scanner {
         if (match('/')) {
           // A comment goes until the end of the lines.
           while (peek() != '\n' && !isAtEnd()) advance();
+        } if (match('*')) {
+          int open_comment_count = 1;
+          while (!isAtEnd()) {
+            if (match('/') && match('*')) {
+              open_comment_count++;
+            }
+
+            if (match('*') && match('/')) {
+              open_comment_count--;
+            }
+
+            if (open_comment_count == 0) {
+              break;
+            } else {
+              advance();
+            }
+          }
+
+          if (open_comment_count != 0) {
+            Lox.error(line, "Open comment block without close");
+          }
         } else {
           addToken(SLASH);
         }
