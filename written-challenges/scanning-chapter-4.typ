@@ -21,3 +21,9 @@ The grammars of Python and Haskell are not regular because they can't be express
 - In Rust, documentation is written in structured comments that includes Rust code in them itself. By parsing the comments through the scanner, you can do error checking on the Rust code example blocks. Additionally, you'd have a AST of the comments themselves, e.g what parameters there are, return type, etc for generating that documentation.
 
 - For languages like CoffeeScript and Python, whitespace is used to delimit code blocks.
+
+= Add support to Lox's scanner for C-style `/* ... */` block comments. Make sure to handle newlines in them. Consider allowing them to nest. Is adding support for nesting more work than you expected? Why?
+
+Nesting support was almost exactly the amount of work I expected, keeping
+track of the amount of open and closed lexemes. Along with an error for
+stray open and closed lexemes.
